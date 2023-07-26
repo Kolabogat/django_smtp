@@ -8,12 +8,6 @@ User = get_user_model()
 
 
 @shared_task
-def sleep_time(time):
-    sleep(time)
-    return 'Success'
-
-
-@shared_task
 def send_newsletter_email_task(user_email, subject, message):
     send_mail(
         subject=subject,
