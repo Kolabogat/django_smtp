@@ -1,14 +1,13 @@
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.conf import settings
 
 from .forms import SendEmailForm, SendReviewForm
 from .models import Contact
 from .tasks import (
     send_newsletter_email_task,
+    send_with_attachment_task,
 )
 
 
@@ -101,7 +100,7 @@ def send_review_form(request):
     if request.method == 'POST':
         form = SendReviewForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data['title']
+            subject = form.cleaned_data['title']
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
             context = {
@@ -109,9 +108,25 @@ def send_review_form(request):
                 'message': message,
             }
             message = render_to_string('send_email/email_message.txt', context)
-            send_newsletter_email_task.delay(email, title, message)
+            send_newsletter_email_task.delay(email, subject, message)
             response = 'Thanks. You sent an email!'
             return render(request, 'user/response.html', {'response': response})
     else:
         form = SendReviewForm()
     return render(request, 'send_email/send_review_form.html', {'form': form})
+
+
+def send_with_attachment(request):
+    try:
+        subject = 'Email with attachment'
+        message = 'Description'
+        file_path = f'{settings.MEDIA_ROOT}/email/file_for_email.txt'
+        send_with_attachment_task.delay(request.user.email, subject, message, file_path)
+        response = 'We sent you an email!'
+        return render(request, 'user/response.html', {'response': response})
+    except Exception:
+        response = f'Error! {Exception}'
+        template = render(request, 'user/response.html', {'response': response})
+        template.status_code = 404
+        return template
+

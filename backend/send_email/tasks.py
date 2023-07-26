@@ -1,9 +1,9 @@
 from celery import shared_task
-
-from time import sleep
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from backend.settings import EMAIL_HOST_USER
 from django.contrib.auth import get_user_model
+
+
 User = get_user_model()
 
 
@@ -36,6 +36,22 @@ def send_beat_email_task():
                 recipient_list=[user.email],
                 fail_silently=False,
             )
+        return 'Success'
+    except Exception:
+        return 'Error'
+
+
+@shared_task
+def send_with_attachment_task(user_email, subject, message, file_path):
+    try:
+        email = EmailMessage(
+            subject,
+            message,
+            EMAIL_HOST_USER,
+            [user_email]
+        )
+        email.attach_file(file_path)
+        email.send(fail_silently=False,)
         return 'Success'
     except Exception:
         return 'Error'
