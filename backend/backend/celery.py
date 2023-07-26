@@ -24,7 +24,7 @@ app.conf.beat_schedule = {
 
 app.conf.beat_schedule = {
     'send-spam-every-minute': {
-        'task': 'send_email.tasks.send_beat_email',
+        'task': 'send_email.tasks.send_beat_email_task',
         'schedule': crontab(minute='*/1')
     }
 }

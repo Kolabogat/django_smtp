@@ -23,7 +23,7 @@ def send_newsletter_email_task(user_email, subject, message):
 
 
 @shared_task
-def send_beat_email():
+def send_beat_email_task():
     try:
         users = User.objects.filter(user_contact__subscribed_mail=True)
         for user in users:
