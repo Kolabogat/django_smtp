@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
+
+from .forms import SendEmailForm
 from .models import Contact
 from .tasks import (
     send_newsletter_email_task,
@@ -77,3 +79,18 @@ def send_one_email(request):
         template.status_code = 404
         return template
 
+
+def send_email_form(request):
+    if request.method == 'POST':
+        form = SendEmailForm(request.POST)
+        if form.is_valid():
+            send_newsletter_email_task.delay(
+                request.user.email,
+                form.cleaned_data["title"],
+                form.cleaned_data["message"],
+            )
+            response = 'Thanks. You sent an email!'
+            return render(request, 'user/response.html', {'response': response})
+    else:
+        form = SendEmailForm()
+    return render(request, 'send_email/send_email_form.html', {'form': form})

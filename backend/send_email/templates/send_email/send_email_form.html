@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Send Email</h1>
+    <form action="{% url 'send_email_form' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="send_email_form" type="submit" value="Login">Send email</button>
+    </form>
+    <p><a href="{% url 'user_profile' %}">Profile</a></p>
+{% endblock %}
