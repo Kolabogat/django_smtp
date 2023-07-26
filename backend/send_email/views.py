@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render, redirect
 from .models import Contact
 from .tasks import (
     send_newsletter_email_task,
@@ -18,13 +19,21 @@ def send_subscription_email(request):
             send_newsletter_email_task.delay(request.user.email, subject, message)
             contact_user.subscribed_mail = True
             contact_user.save()
-            return HttpResponse('You have subscribed to the newsletter!')
+            response = 'You have subscribed to the newsletter!'
+            return render(request, 'user/response.html', {'response': response})
         elif Contact.objects.filter(user=request.user, subscribed_mail=True).exists():
-            return HttpResponse('You already subscribed to the newsletter!')
+            response = 'You already subscribed to the newsletter!'
+            return render(request, 'user/response.html', {'response': response})
         else:
-            return HttpResponse('Error! Re-log in.')
+            response = 'Error! Re-log in.'
+            template = render(request, 'user/response.html', {'response': response})
+            template.status_code = 404
+            return template
     except Exception:
-        return HttpResponse('Error!')
+        response = 'Error!'
+        template = render(request, 'user/response.html', {'response': response})
+        template.status_code = 404
+        return template
 
 
 @login_required
@@ -37,11 +46,19 @@ def send_unsubscribe_email(request):
             send_newsletter_email_task.delay(request.user.email, subject, message)
             contact_user.subscribed_mail = False
             contact_user.save()
-            return HttpResponse('You have unsubscribed from the newsletter!')
+            response = 'You have unsubscribed from the newsletter!'
+            return render(request, 'user/response.html', {'response': response})
         elif Contact.objects.filter(user=request.user, subscribed_mail=False).exists():
-            return HttpResponse('You are not subscribed to the newsletter!')
+            response = 'You are not subscribed to the newsletter!'
+            return render(request, 'user/response.html', {'response': response})
         else:
-            return HttpResponse('Error! Re-log in.')
+            response = 'Error! Re-log in.'
+            template = render(request, 'user/response.html', {'response': response})
+            template.status_code = 404
+            return template
     except Exception:
-        return HttpResponse('Error!')
+        response = 'Error!'
+        template = render(request, 'user/response.html', {'response': response})
+        template.status_code = 404
+        return template
 

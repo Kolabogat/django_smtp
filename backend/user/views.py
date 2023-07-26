@@ -66,3 +66,8 @@ def user_profile(request):
         return render(request, 'user/user_profile.html', context=context)
     else:
         return redirect('login')
+
+
+def user_response(request):
+    response = f'Hello {request.user}'
+    return render(request, 'user/user_response.html', {'response': response})
