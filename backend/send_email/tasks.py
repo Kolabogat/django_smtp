@@ -9,14 +9,17 @@ User = get_user_model()
 
 @shared_task
 def send_newsletter_email_task(user_email, subject, message):
-    send_mail(
-        subject=subject,
-        message=message,
-        from_email=EMAIL_HOST_USER,
-        recipient_list=[user_email],
-        fail_silently=False,
-        )
-    return 'Success'
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=EMAIL_HOST_USER,
+            recipient_list=[user_email],
+            fail_silently=False,
+            )
+        return 'Success'
+    except Exception:
+        return 'Error'
 
 
 @shared_task
