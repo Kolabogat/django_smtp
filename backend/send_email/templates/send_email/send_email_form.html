@@ -6,7 +6,7 @@
     <form action="{% url 'send_email_form' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button name="send_email_form" type="submit" value="Login">Send email</button>
+        <button name="send_email_form" type="submit">Send email</button>
     </form>
     <p><a href="{% url 'user_profile' %}">Profile</a></p>
 {% endblock %}
