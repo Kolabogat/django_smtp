@@ -70,4 +70,4 @@ def user_profile(request):
 
 def user_response(request):
     response = f'Hello {request.user}'
-    return render(request, 'user/user_response.html', {'response': response})
+    return render(request, 'user/response.html', {'response': response})
