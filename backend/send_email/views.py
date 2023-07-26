@@ -62,3 +62,18 @@ def send_unsubscribe_email(request):
         template.status_code = 404
         return template
 
+
+@login_required
+def send_one_email(request):
+    try:
+        subject = 'We sent you one email!'
+        message = 'Message description...'
+        send_newsletter_email_task.delay(request.user.email, subject, message)
+        response = 'We sent you one email!'
+        return render(request, 'user/response.html', {'response': response})
+    except Exception:
+        response = 'Error!'
+        template = render(request, 'user/response.html', {'response': response})
+        template.status_code = 404
+        return template
+
