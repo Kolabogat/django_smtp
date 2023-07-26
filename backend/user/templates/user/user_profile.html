@@ -7,7 +7,9 @@
     <p><a href="{% url 'logout' %}">logout</a></p>
     {% if contact_user.subscribed_mail %}
     <p><a href="{% url 'unsubscribe' %}">Unsubscribe from mailing list</a></p>
+    <p>Subscribe to the mailing list</p>
     {% else %}
+    <p>Unsubscribe from mailing list</p>
     <p><a href="{% url 'subscribe' %}">Subscribe to the mailing list</a></p>
     {% endif %}
 
