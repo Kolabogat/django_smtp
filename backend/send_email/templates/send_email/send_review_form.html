@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Send Review</h1>
+    <form action="{% url 'send_review_form' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="send_review_form" type="submit">Send review</button>
+    </form>
+    <p><a href="{% url 'user_profile' %}">Profile</a></p>
+{% endblock %}

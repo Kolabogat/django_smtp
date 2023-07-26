@@ -1,0 +1,5 @@
+Hello {{ email|safe }}
+Here is your message:
+{{ message|safe }}
+
+Thanks!

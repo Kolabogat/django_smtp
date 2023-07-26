@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 
-from .forms import SendEmailForm
+from .forms import SendEmailForm, SendReviewForm
 from .models import Contact
 from .tasks import (
     send_newsletter_email_task,
@@ -94,3 +95,23 @@ def send_email_form(request):
     else:
         form = SendEmailForm()
     return render(request, 'send_email/send_email_form.html', {'form': form})
+
+
+def send_review_form(request):
+    if request.method == 'POST':
+        form = SendReviewForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            context = {
+                'email': email,
+                'message': message,
+            }
+            message = render_to_string('send_email/email_message.txt', context)
+            send_newsletter_email_task.delay(email, title, message)
+            response = 'Thanks. You sent an email!'
+            return render(request, 'user/response.html', {'response': response})
+    else:
+        form = SendReviewForm()
+    return render(request, 'send_email/send_review_form.html', {'form': form})
