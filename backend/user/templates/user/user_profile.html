@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Home</h1>
+    <p>Welcome {{ request.user }}!</p>
+    <p><a href="{% url 'logout' %}">logout</a></p>
+    {% if contact_user.subscribed_mail %}
+    <p><a href="{% url 'unsubscribe' %}">Unsubscribe from mailing list</a></p>
+    {% else %}
+    <p><a href="{% url 'subscribe' %}">Subscribe to the mailing list</a></p>
+    {% endif %}
+
+{% endblock %}
