@@ -12,10 +12,10 @@ def sleep_time(time):
 
 
 @shared_task
-def send_email_task(user_email):
+def send_newsletter_email_task(user_email, subject, message):
     send_mail(
-        subject='You are subscribed to the newsletter!',
-        message='You are subscribed to the newsletter!',
+        subject=subject,
+        message=message,
         from_email=EMAIL_HOST_USER,
         recipient_list=[user_email],
         fail_silently=False,
