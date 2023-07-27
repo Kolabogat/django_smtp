@@ -1,0 +1,19 @@
+pip install Django
+pip install celery
+pip install Redis
+pip install flower
+pip install python-dotenv
+
+cd backend
+python manage.py runserver
+python manage.py startapp send_email
+python manage.py startapp user
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+python manage.py runserver
+celery -A backend worker -l info
+celery -A backend flower
+celery -A backend beat -l info
+
