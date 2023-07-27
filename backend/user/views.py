@@ -55,7 +55,6 @@ def user_logout(request):
     return redirect('login')
 
 
-@login_required
 def user_profile(request):
     if request.user.is_authenticated:
         contact_user = Contact.objects.filter(user=request.user).get()
