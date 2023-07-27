@@ -2,7 +2,7 @@ from celery import shared_task
 from django.core.mail import send_mail, EmailMessage
 from backend.settings import EMAIL_HOST_USER
 from django.contrib.auth import get_user_model
-
+from send_email.models import Contact
 
 User = get_user_model()
 
@@ -25,15 +25,14 @@ def send_newsletter_email_task(user_email, subject, message):
 @shared_task
 def send_beat_email_task():
     try:
-        users = User.objects.filter(user_contact__subscribed_mail=True)
-        for user in users:
+        for contact in Contact.objects.all():
             send_mail(
                 subject='Periodic message!',
                 message='This message is sent periodically. '
                         'If you do not want to receive the newsletter, '
                         'unsubscribe from the newsletter.',
                 from_email=EMAIL_HOST_USER,
-                recipient_list=[user.email],
+                recipient_list=[contact.subscribed_mail],
                 fail_silently=False,
             )
         return 'Success'
