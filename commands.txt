@@ -17,3 +17,5 @@ celery -A backend worker -l info
 celery -A backend flower
 celery -A backend beat -l info
 
+sudo docker-compose build
+sudo docker-compose up
