@@ -5,17 +5,17 @@
     <h1>Home</h1>
     <p>Welcome {{ request.user }}!</p>
     <p><a href="{% url 'logout' %}">logout</a></p>
-    {% if contact_user.subscribed_mail %}
+    {% if contact_user %}
     <p><a href="{% url 'unsubscribe' %}">Unsubscribe from mailing list</a></p>
     <p>Subscribe to the mailing list</p>
     {% else %}
     <p>Unsubscribe from mailing list</p>
     <p><a href="{% url 'subscribe' %}">Subscribe to the mailing list</a></p>
     {% endif %}
-    <p><a href="{% url 'send_one_email' %}">Send me one email</a></p>
-    <p><a href="{% url 'send_email_form' %}">Send email form</a></p>
-    <p><a href="{% url 'send_review_form' %}">Send a review message to a specific user using a .txt file</a></p>
-    <p><a href="{% url 'send_with_attachment' %}">Send an email with attachment</a></p>
+    <p><a href="{% url 'send_one_email' %}">MAIL: Send me one email</a></p>
+    <p><a href="{% url 'send_email_form' %}">FORM: Send email form</a></p>
+    <p><a href="{% url 'send_review_form' %}">FORM: Send a review message to a specific user using a .txt file</a></p>
+    <p><a href="{% url 'send_with_attachment' %}">MAIL: Send an email with attachment</a></p>
 
 
 {% endblock %}
