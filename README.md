@@ -1,5 +1,13 @@
 # django_smtp
 
+## Docker-compose
+Open Terminal in app directory and execute these commands:
+```bash
+sudo docker-compose build
+```
+```bash
+sudo docker-compose up
+```
 ## How to get gmail app key?
 1. Go to [Manage your Google Account](https://myaccount.google.com/)
 2. Then go to [Security](https://myaccount.google.com/u/1/security)
