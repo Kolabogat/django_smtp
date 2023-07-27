@@ -1,9 +1,12 @@
+### COMMANDS ###
+################
 pip install Django
 pip install celery
 pip install Redis
 pip install flower
 pip install python-dotenv
 
+django-admin startproject backend
 cd backend
 python manage.py runserver
 python manage.py startapp send_email
