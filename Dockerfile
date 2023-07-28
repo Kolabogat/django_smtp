@@ -9,7 +9,6 @@ COPY ./requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./backend /app
-WORKDIR /app
 
 ADD start.sh /
 RUN chmod +x /start.sh
